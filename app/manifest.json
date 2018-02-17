@@ -1,0 +1,28 @@
+{
+  //ID: mhiciapkiibmpkamhboaeighhbocagij
+  "manifest_version": 2,
+  "minimum_chrome_version": "28",
+  "offline_enabled": true,
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxS3/L6oeFVA3Q7XB83q9EQHHYDnw0CjDJ4DxgkWQS7EukxeoJqCVdhHmRwq6drzh95Qr+uMhXSuKE57eME1/fuix4epXXCuKTw+uwQqtrg+ADV2i2Cx2pnBmUz4lVzizkk/SPeKlPLtejiyrJF4ZzSIm3DeefmErjAj1mh2dYtqQwmYOQ/JJedMJ1Q7Vxne/+4C52wH8PrijR3jG24A0CcuyOZ0258DoFPPzwTsvliVmpW8KBKTADhbjgSBaeU6ictaGAFw7rHiEUJKTWF0NmUq7R+qZGQShu/Okz8Y6i8LvuHhwBqSXCwsz09O3KQ/wJSR7AUpImVfvyRIXFdWa5wIDAQAB",
+  "name": "Use IE",
+  "description": "Forces certain URL's to launch in IE instead",
+  "version": "1.0",
+  "update_url": "http://www.google.com/",
+  "background": {
+    "scripts": ["js/background.js"],
+    "persistent": false
+  },
+  "options_page": "options.html",
+  "content_scripts": [{
+    "matches": [
+      "*://*/*"
+    ],
+    "js": [
+      "js/main.js"
+    ]
+  }],
+  "permissions": [
+    "nativeMessaging",
+    "storage"
+  ]
+}

@@ -1,0 +1,15 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Classes\snews]
+"URL Protocol"="\"\""
+@="\"URL:snews\""
+
+[HKEY_CURRENT_USER\Software\Classes\snews\DefaultIcon]
+@="\"C:\\Program Files\\Internet Explorer\\iexplore.exe,1\""
+
+[HKEY_CURRENT_USER\Software\Classes\snews\shell]
+
+[HKEY_CURRENT_USER\Software\Classes\snews\shell\open]
+
+[HKEY_CURRENT_USER\Software\Classes\snews\shell\open\command]
+@="cmd.exe /V /C \"set s1=%1 && start /D\\\"C:\\Program Files\\Internet Explorer\\\" iexplore.exe !s1:snews:=!\""

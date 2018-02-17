@@ -1,0 +1,9 @@
+{
+  "name": "com.haysmed.useie",
+  "description": "Use IE Host Listener",
+  "path": "useie-host.exe",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://mhiciapkiibmpkamhboaeighhbocagij/"
+  ]
+}

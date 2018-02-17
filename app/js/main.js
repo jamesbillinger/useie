@@ -1,0 +1,1 @@
+chrome.extension.sendMessage({url: location.href});
