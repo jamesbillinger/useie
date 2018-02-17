@@ -5,13 +5,24 @@ var connected = true;
 var port = chrome.runtime.connectNative('com.jamesbillinger.useie');
 port.onMessage.addListener(function(msg) {
   //console.log(msg);
-  if (msg.defaultURLs && Array.isArray(msg.defaultURLs)) {
-    for (var i = 0; i < msg.defaultURLs.length; i++) {
-      if (urls.indexOf(msg.defaultURLs[i]) === -1) {
-        urls.push(msg.defaultURLs[i]);
+  var inc = msg.defaultURLs && msg.defaultURLs.include;
+  if (inc && Array.isArray(inc)) {
+    for (var i = 0; i < inc.length; i++) {
+      if (urls.indexOf(inc[i]) === -1) {
+        urls.push(inc[i]);
       }
     }
   }
+  var exc = msg.defaultURLs && msg.defaultURLs.exclude;
+  if (exc && Array.isArray(exc)) {
+    for (var i = 0; i < exc.length; i++) {
+      let ind = urls.indexOf(exc[i]);
+      if (ind > -1) {
+        urls.splice(ind, 1);
+      }
+    }
+  }
+  chrome.storage.sync.set({urls});
 });
 port.onDisconnect.addListener(function() {
   console.log('disconnected');
@@ -40,7 +51,7 @@ chrome.webNavigation && chrome.webNavigation.onCommitted.addListener(function(de
         port.postMessage(details.url);
       } else if (matchedURLs.indexOf(matchedURL) === -1) {
         console.log('unable to send message, disconnected');
-        chrome.tabs[details.tabId].alert('test');
+        alert("This page requires IE, but either IE or this extension are not properly installed and available");
         //sendResponse({response: 'This page requires IE, but either IE or this extension are not properly installed and available'});
       }
       matchedURLs.push(matchedURL);

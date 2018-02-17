@@ -11,3 +11,4 @@ public/dist
 .idea/
 node_modules/
 webpack_cache/
+*.zip

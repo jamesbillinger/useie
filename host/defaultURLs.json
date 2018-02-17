@@ -1,4 +1,9 @@
-[
-  "://api.haysmed.com/",
-  "://synapse.haysmed.com/"
-]
+{
+  "include": [
+    "://api.haysmed.com/",
+    "://synapse.haysmed.com/"
+  ],
+  "exclude": [
+    "://test/"
+  ]
+}
