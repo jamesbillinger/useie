@@ -17,7 +17,7 @@ else
   fi
 fi
 
-HOST_NAME=com.haysmed.useie
+HOST_NAME=com.jamesbillinger.useie
 
 # Create directory to store native messaging host.
 mkdir -p "$TARGET_DIR"

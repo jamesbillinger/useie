@@ -1,5 +1,5 @@
 {
-  "name": "com.haysmed.useie",
+  "name": "com.jamesbillinger.useie",
   "description": "Use IE Host Listener",
   "path": "useie-host.exe",
   "type": "stdio",

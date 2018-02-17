@@ -1,37 +1,71 @@
-function onNativeMessage(message) {
-  console.log(message);
-}
-
-function onDisconnected() {
-  console.log('disconnected');
-}
-
-var hostName = "com.haysmed.useie";
-var port = chrome.runtime.connectNative(hostName);
-port.onMessage.addListener(onNativeMessage);
-port.onDisconnect.addListener(onDisconnected);
-
 var urls = [];
-chrome.storage.sync.get('urls', function(response) {
-  urls = response || [];
+var matchedURLs = [];
+var connected = true;
+
+var port = chrome.runtime.connectNative('com.jamesbillinger.useie');
+port.onMessage.addListener(function(msg) {
+  console.log(msg);
+  if (msg.defaultURLs && Array.isArray(msg.defaultURLs)) {
+    for (var i = 0; i < msg.defaultURLs.length; i++) {
+      if (urls.indexOf(msg.defaultURLs[i]) === -1) {
+        urls.push(msg.defaultURLs[i]);
+      }
+    }
+  }
+});
+port.onDisconnect.addListener(function() {
+  console.log('disconnected');
+  connected = false;
 });
 
-chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.url) {
-    var send = false;
+chrome.storage.sync.get('urls', function(ret) {
+  if (ret && Array.isArray(ret.urls)) {
+    urls = ret.urls;
+  }
+});
+
+chrome.webNavigation && chrome.webNavigation.onCommitted.addListener(function(details) {
+  console.log(details.transitionType, details.url);
+  if (['auto_subframe','about:blank'].indexOf(details.transitionType) === -1) {
+    var matchedURL;
     for (var i = 0; i < urls.length; i++) {
-      var u = urls[i];
-      if (u && request.url.indexOf(u) > -1) {
-        send = true;
+      if (urls[i] && details.url.indexOf(urls[i]) > -1) {
+        matchedURL = urls[i];
         break;
       }
     }
-    if (send) {
-      chrome.tabs.remove(sender.tab.id);
-      var message = request.url;
-      port.postMessage(message);
+    if (matchedURL) {
+      if (connected) {
+        chrome.tabs.remove(details.tabId);
+        port.postMessage(details.url);
+      } else if (matchedURLs.indexOf(matchedURL) === -1) {
+        console.log('unable to send message, disconnected');
+        chrome.tabs[details.tabId].alert('test');
+        //sendResponse({response: 'This page requires IE, but either IE or this extension are not properly installed and available'});
+      }
+      matchedURLs.push(matchedURL);
     }
   }
-  //chrome.tabs.update(sender.tab.id, {url: request.redirect});
-  //sendResponse();
 });
+
+/*chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.url) {
+    var matchedURL;
+    for (var i = 0; i < urls.length; i++) {
+      if (urls[i] && request.url.indexOf(urls[i]) > -1) {
+        matchedURL = urls[i];
+        break;
+      }
+    }
+    if (matchedURL) {
+      if (connected) {
+        chrome.tabs.remove(sender.tab.id);
+        port.postMessage(request.url);
+      } else if (matchedURLs.indexOf(matchedURL) === -1) {
+        console.log('unable to send message, disconnected');
+        sendResponse({response: 'This page requires IE, but either IE or this extension are not properly installed and available'});
+      }
+      matchedURLs.push(matchedURL);
+    }
+  }
+});*/

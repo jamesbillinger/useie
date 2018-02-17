@@ -16,6 +16,6 @@ else
   fi
 fi
 
-HOST_NAME=com.google.chrome.example.echo
-rm "$TARGET_DIR/com.haysmed.useie.json"
+HOST_NAME=com.jamesbillinger.useie
+rm "$TARGET_DIR/com.jamesbillinger.useie.json"
 echo "Native messaging host $HOST_NAME has been uninstalled."

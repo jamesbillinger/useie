@@ -13,16 +13,18 @@
     "persistent": false
   },
   "options_page": "options.html",
-  "content_scripts": [{
-    "matches": [
-      "*://*/*"
-    ],
-    "js": [
-      "js/main.js"
-    ]
-  }],
+  //"content_scripts": [{
+  //  "matches": [
+  //    "*://*/*"
+  //  ],
+  //  "js": [
+  //    "js/main.js"
+  //  ],
+  //  "run_at": "document_start"
+  //}],
   "permissions": [
     "nativeMessaging",
-    "storage"
+    "storage",
+    "webNavigation"
   ]
 }
