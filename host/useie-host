@@ -4,7 +4,7 @@ import struct
 import sys
 import threading
 import Queue
-import subprocess
+from subprocess import Popen
 import os
 import time
 
@@ -47,7 +47,7 @@ def read_thread_func(queue):
       # In headless mode just send an echo message back.
       send_message('{"handling": %s}' % text)
       if os.name == 'nt':
-        subprocess.Popen(["C:\Program Files\Internet Explorer\iexplore.exe",text.replace('"','')])
+        Popen(["C:\Program Files\Internet Explorer\iexplore.exe",text.replace('"','')])
 
 
 def Main():
