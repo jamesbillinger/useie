@@ -47,7 +47,7 @@ def read_thread_func(queue):
       # In headless mode just send an echo message back.
       send_message('{"handling": %s}' % text)
       if os.name == 'nt':
-        subprocess.call(["C:\Program Files\Internet Explorer\iexplore.exe",text.replace('"','')])
+        subprocess.Popen(["C:\Program Files\Internet Explorer\iexplore.exe",text.replace('"','')])
 
 
 def Main():
