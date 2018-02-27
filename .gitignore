@@ -12,3 +12,4 @@ public/dist
 node_modules/
 webpack_cache/
 *.zip
+*.key

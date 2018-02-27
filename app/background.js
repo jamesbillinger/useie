@@ -35,8 +35,34 @@ chrome.storage.sync.get('urls', function(ret) {
   }
 });
 
-chrome.webNavigation && chrome.webNavigation.onCommitted.addListener(function(details) {
-  //console.log(details.transitionType, details.url);
+
+chrome.webNavigation && chrome.webNavigation.onBeforeNavigate.addListener(function(details) {
+  var matchedURL;
+  for (var i = 0; i < urls.length; i++) {
+    if (urls[i] && details.url.indexOf(urls[i]) > -1) {
+      matchedURL = urls[i];
+      break;
+    }
+  }
+  if (matchedURL) {
+    if (connected) {
+      chrome.tabs.remove(details.tabId, function(cb) {
+        if (chrome.runtime.lastError) {
+          console.log(chrome.runtime.lastError.message);
+        }
+      });
+      port.postMessage(details.url);
+    } else if (matchedURLs.indexOf(matchedURL) === -1) {
+      console.log('unable to send message, disconnected');
+      alert("This page requires IE, but either IE or this extension are not properly installed and available");
+      //sendResponse({response: 'This page requires IE, but either IE or this extension are not properly installed and available'});
+    }
+    matchedURLs.push(matchedURL);
+  }
+});
+
+/*chrome.webNavigation && chrome.webNavigation.onCommitted.addListener(function(details) {
+  console.log(details.transitionType, details.url);
   if (['auto_subframe','about:blank'].indexOf(details.transitionType) === -1) {
     var matchedURL;
     for (var i = 0; i < urls.length; i++) {
@@ -57,4 +83,4 @@ chrome.webNavigation && chrome.webNavigation.onCommitted.addListener(function(de
       matchedURLs.push(matchedURL);
     }
   }
-});
+});*/
